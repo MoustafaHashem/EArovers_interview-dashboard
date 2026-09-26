@@ -88,7 +88,7 @@ export default function Dashboard() {
               <th className="px-4 py-3 font-medium">الهاتف</th>
               <th className="px-4 py-3 font-medium">الحالة</th>
               <th className="px-4 py-3 font-medium">الموعد المحدد</th>
-              <th className="px-4 py-3 font-medium">آخر مراجعة</th>
+              <th className="px-4 py-3 font-medium">المحاور</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -120,7 +120,7 @@ export default function Dashboard() {
                     <StatusBadge status={c.status} />
                   </td>
                   <td className="px-4 py-3 text-slate-500">{c.selected_interview_time || '—'}</td>
-                  <td className="px-4 py-3 text-slate-400">{c.reviewed_by || '—'}</td>
+                  <td className="px-4 py-3 text-slate-400">{c.interviewer_name || '—'}</td>
                 </tr>
               ))
             )}
