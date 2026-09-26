@@ -27,6 +27,7 @@ export default function CandidateModal({ candidate, onClose, onSaved }) {
     status: candidate.status || 'جديد',
     interview_notes: candidate.interview_notes || '',
     selected_interview_time: candidate.selected_interview_time || '',
+    interviewer_name: candidate.interviewer_name || '',
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -159,6 +160,16 @@ export default function CandidateModal({ candidate, onClose, onSaved }) {
           </div>
 
           <div>
+            <label className="mb-1 block text-sm font-medium text-slate-600">اسم المحاور (الشخص اللي عمل الإنترفيو)</label>
+            <input
+              value={form.interviewer_name}
+              onChange={(e) => update('interviewer_name', e.target.value)}
+              placeholder="مثال: مصطفى أحمد"
+              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100"
+            />
+          </div>
+
+          <div>
             <label className="mb-1 block text-sm font-medium text-slate-600">ملاحظات المقابلة</label>
             <textarea
               value={form.interview_notes}
@@ -168,12 +179,19 @@ export default function CandidateModal({ candidate, onClose, onSaved }) {
             />
           </div>
 
-          {candidate.reviewed_by && (
-            <p className="text-xs text-slate-400">
-              آخر مراجعة بواسطة {candidate.reviewed_by} في{' '}
-              {candidate.reviewed_at && new Date(candidate.reviewed_at).toLocaleString('ar-EG')}
-            </p>
-          )}
+          <div className="flex flex-col gap-1">
+            {candidate.reviewed_by && (
+              <p className="text-xs text-slate-400">
+                آخر تعديل بواسطة: <span className="font-medium">{candidate.reviewed_by}</span>{' '}
+                {candidate.reviewed_at && `في ${new Date(candidate.reviewed_at).toLocaleString('ar-EG')}`}
+              </p>
+            )}
+            {candidate.interviewer_name && (
+              <p className="text-xs text-slate-400">
+                المحاور: <span className="font-medium text-brand-700">{candidate.interviewer_name}</span>
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="sticky bottom-0 flex flex-col-reverse gap-2 border-t border-slate-200 bg-white px-6 py-4 sm:flex-row sm:justify-between">
