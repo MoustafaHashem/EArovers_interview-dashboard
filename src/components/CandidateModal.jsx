@@ -13,6 +13,7 @@ function toWhatsAppNumber(raw) {
   return digits
 }
 
+
 export default function CandidateModal({ candidate, onClose, onSaved }) {
   const { profile } = useAuth()
   const [form, setForm] = useState({
@@ -64,9 +65,36 @@ export default function CandidateModal({ candidate, onClose, onSaved }) {
   const handleWhatsApp = () => {
     const number = toWhatsAppNumber(form.whatsapp || form.phone)
     if (!number) return
-    const time = form.selected_interview_time || 'قريباً (لم يتم تحديده بعد)'
-    const message = `أهلاً بيك يا ${form.full_name}، تم تحديد موعد الإنترفيو الخاص بك يوم ${time}`
-    const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`
+
+    const time = form.selected_interview_time || '[لم يتم التحديد]'
+    const interviewer = form.interviewer_name || '[سيتم تحديده لاحقاً]'
+    const firstName = form.full_name ? form.full_name.split(' ')[0] : ''
+
+    const gender = (form.gender || '').toLowerCase().trim()
+    const isFemale =
+      gender === 'أنثى' ||
+      gender === 'انثى' ||
+      gender === 'female' ||
+      gender === 'f'
+
+    const lines = isFemale
+      ? [
+          'أهلاً بيكي في عشيرة جوالة هندسة عين شمس!',
+          'إحنا مبسوطين جداً إنك حابة تنضمي لينا يا ' + firstName + '. حبينا نأكد معاكي ميعاد الإنترفيو بتاعك، واللي هيكون إن شاء الله ' + time + '.',
+          'المكان: أوضة العشيرة (أمام مبنى كريديت، جنب مبنى الرعاية).',
+          'اللي هيعمل معاكي الإنترفيو: ' + interviewer + '.',
+          'مستنيينك، وماتقلقيش خالص الموضوع بسيط وودي جداً.. لو هتتأخري أو عندك أي استفسار تقدري تتواصلي معانا في أي وقت.',
+        ]
+      : [
+          'أهلاً بيك في عشيرة جوالة هندسة عين شمس!',
+          'إحنا مبسوطين جداً إنك حابب تنضم لينا يا ' + firstName + '. حبينا نأكد معاك ميعاد الإنترفيو بتاعك، واللي هيكون إن شاء الله ' + time + '.',
+          'المكان: أوضة العشيرة (أمام مبنى كريديت، جنب مبنى الرعاية).',
+          'اللي هيعمل معاك الإنترفيو: ' + interviewer + '.',
+          'مستنيينك، وماتقلقش خالص الموضوع بسيط وودي جداً.. لو هتتأخر أو عندك أي استفسار تقدر تتواصل معانا في أي وقت.',
+        ]
+
+    const message = lines.join('\n')
+    const url = 'https://wa.me/' + number + '?text=' + encodeURIComponent(message)
     window.open(url, '_blank')
   }
 
